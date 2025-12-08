@@ -6,6 +6,10 @@ docker run --name es01 -it -m 1GB docker.elastic.co/elasticsearch/elasticsearch:
 # open new terminal
 docker ps
 
+# at client side
+docker inspect es01
+export ELASTIC_PASSWORD=sfgfhrhhjtgewf
+curl -X GET -k -u elastic:$ELASTIC_PASSWORD  https://172.17.0.2:9200/
 
 
 
