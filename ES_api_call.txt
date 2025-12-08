@@ -43,3 +43,59 @@ POST /my-index/_doc
 # Perform a search in my-index
 GET /my-index/_search?q="rocky mountain"
 
+
+
+# Welcome to the Dev Tools Console!
+#
+# You can use Console to explore the Elasticsearch API. See the Elasticsearch API reference to learn more:
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/rest-apis.html
+#
+# Here are a few examples to get you started.
+
+GET /_cat/health?v
+
+GET /_cat/indices
+
+GET /_cat/master
+
+# Create an index
+PUT /my-index-vimal
+
+POST /emp/_doc
+{
+ "name": "jaipur",
+"mob": 135355435,
+"city": "delhi" 
+}
+
+GET /emp/_search?q=vimal
+
+GET /emp/_search
+
+GET /emp/_search_shards
+
+GET /_cat/shards?h=index,ip,shard&v
+
+GET /emp/_shard_stores?pretty
+
+GET /_cat/shards/emp?v
+
+GET /_cluster/health
+
+GET /_cluster/stats
+
+#GET /_cluster/allocation/explain?pretty
+
+
+# Add a document to my-index
+POST /my-index/_doc
+{
+    "id": "park_rocky-mountain",
+    "title": "Rocky Mountain",
+    "description": "Bisected north to south by the Continental Divide, this portion of the Rockies has ecosystems varying from over 150 riparian lakes to montane and subalpine forests to treeless alpine tundra."
+}
+
+
+# Perform a search in my-index
+GET /my-index/_search?q="rocky mountain"
+
