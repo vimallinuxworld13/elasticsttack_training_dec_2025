@@ -11,6 +11,7 @@ docker inspect es01
 export ELASTIC_PASSWORD=sfgfhrhhjtgewf
 curl -X GET -k -u elastic:$ELASTIC_PASSWORD  https://172.17.0.2:9200/
 
+# use it to remove first, 
 docker rm es01
 
 #  launch elastic search service node
