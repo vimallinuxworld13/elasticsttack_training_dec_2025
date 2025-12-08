@@ -44,6 +44,21 @@ curl -X GET -k -u elastic:$ELASTIC_PASSWORD  https://localhost:9200/_cat/master?
 
 
 
+docker rm kib01
+docker run --name kib01 -dit --net elastic -p 5601:5601 docker.elastic.co/kibana/kibana:9.2.1
+
+docker exec -it es01 /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
+
+docker logs kib01
+
+URL : ip address of base linux 
+# ifconfig enp0s3
+
+go windows: https://baselinuxip:5601
+
+
+
+
 
 
 
