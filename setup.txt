@@ -1,7 +1,7 @@
 yum clean all
 
 #  launch elastic search service node
-docker run --name es01 -it -m 1GB docker.elastic.co/elasticsearch/elasticsearch:9.2.2
+docker run --name es01 -it -m 1GB docker.elastic.co/elasticsearch/elasticsearch:9.2.1
 
 # open new terminal
 docker ps
@@ -18,7 +18,7 @@ curl -X GET -k -u elastic:$ELASTIC_PASSWORD  https://172.17.0.2:9200/
 docker rm es01
 
 #  launch elastic search service node
-docker run --name es01 -dit -p 9200:9200 --net elastic  -m 1GB docker.elastic.co/elasticsearch/elasticsearch:9.2.2
+docker run --name es01 -dit -p 9200:9200 --net elastic  -m 1GB docker.elastic.co/elasticsearch/elasticsearch:9.2.1
 
 docker logs es01
 
@@ -31,12 +31,12 @@ or
 docker exec -it es01 /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s node
 
 export ENROLLMENT_TOKEN=<token>
-docker run -e ENROLLMENT_TOKEN="<token>" --name es02 --net elastic -it -m 1GB docker.elastic.co/elasticsearch/elasticsearch:9.2.2
+docker run -e ENROLLMENT_TOKEN="<token>" --name es02 --net elastic -it -m 1GB docker.elastic.co/elasticsearch/elasticsearch:9.2.1
 curl -X GET -k -u elastic:$ELASTIC_PASSWORD  https://localhost:9200/_cat/nodes?v
 
 
-docker run -e ENROLLMENT_TOKEN="<token>" --name es03 --net elastic -it -m 1GB docker.elastic.co/elasticsearch/elasticsearch:9.2.2
-docker run -e ENROLLMENT_TOKEN="<token>" --name es04 --net elastic -it -m 1GB docker.elastic.co/elasticsearch/elasticsearch:9.2.2
+docker run -e ENROLLMENT_TOKEN="<token>" --name es03 --net elastic -it -m 1GB docker.elastic.co/elasticsearch/elasticsearch:9.2.1
+docker run -e ENROLLMENT_TOKEN="<token>" --name es04 --net elastic -it -m 1GB docker.elastic.co/elasticsearch/elasticsearch:9.2.1
 curl -X GET -k -u elastic:$ELASTIC_PASSWORD  https://localhost:9200/_cat/nodes?v
 
 curl -X GET -k -u elastic:$ELASTIC_PASSWORD  https://localhost:9200/_cat/health?v
