@@ -40,6 +40,7 @@ docker run -e ENROLLMENT_TOKEN="<token>" --name es04 --net elastic -dit -m 1GB d
 curl -X GET -k -u elastic:$ELASTIC_PASSWORD  https://localhost:9200/_cat/nodes?v
 
 curl -X GET -k -u elastic:$ELASTIC_PASSWORD  https://localhost:9200/_cat/health?v
+curl -X GET -k -u elastic:$ELASTIC_PASSWORD  https://localhost:9200/_cat/master?v
 
 
 
