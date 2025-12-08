@@ -19,10 +19,17 @@ docker rm es01
 
 #  launch elastic search service node
 docker run --name es01 -dit -p 9200:9200 --net elastic  -m 1GB docker.elastic.co/elasticsearch/elasticsearch:9.2.2
-export ELASTIC_PASSWORD=sfgfhrhhjtgewf
+
+docker logs es01
+
+export ELASTIC_PASSWORD=<ELASTIC USER PASSWORD>
 curl -X GET -k -u elastic:$ELASTIC_PASSWORD  https://localhost:9200/
 
+# Getting  token
+docker logs es01
+or
 docker exec -it es01 /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s node
+
 export ENROLLMENT_TOKEN=<token>
 docker run -e ENROLLMENT_TOKEN="<token>" --name es02 --net elastic -it -m 1GB docker.elastic.co/elasticsearch/elasticsearch:9.2.2
 curl -X GET -k -u elastic:$ELASTIC_PASSWORD  https://localhost:9200/_cat/nodes?v
