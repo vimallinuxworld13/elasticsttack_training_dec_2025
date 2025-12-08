@@ -1,2 +1,8 @@
 curl  -X PUT  -k  -u elastic:$ELASTIC_PASSWORD  -H "Content-type: application/json"  -d '{ "settings": { "number_of_shards": 3,"number_of_replicas": 3}}'   https://localhost:9200/emp
 
+
+curl  -X GET  -k  -u elastic:$ELASTIC_PASSWORD   https://localhost:9200/_cat/indices?v
+
+curl  -X GET  -k  -u elastic:$ELASTIC_PASSWORD   https://localhost:9200/emp
+curl  -X DELETE -k  -u elastic:$ELASTIC_PASSWORD   https://localhost:9200/emp
+
