@@ -35,6 +35,10 @@ docker run -e ENROLLMENT_TOKEN="<token>" --name es02 --net elastic -it -m 1GB do
 curl -X GET -k -u elastic:$ELASTIC_PASSWORD  https://localhost:9200/_cat/nodes?v
 
 
+docker run -e ENROLLMENT_TOKEN="<token>" --name es03 --net elastic -it -m 1GB docker.elastic.co/elasticsearch/elasticsearch:9.2.2
+docker run -e ENROLLMENT_TOKEN="<token>" --name es04 --net elastic -it -m 1GB docker.elastic.co/elasticsearch/elasticsearch:9.2.2
+curl -X GET -k -u elastic:$ELASTIC_PASSWORD  https://localhost:9200/_cat/nodes?v
+
 
 
 
