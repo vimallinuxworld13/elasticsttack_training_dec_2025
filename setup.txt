@@ -11,6 +11,15 @@ docker inspect es01
 export ELASTIC_PASSWORD=sfgfhrhhjtgewf
 curl -X GET -k -u elastic:$ELASTIC_PASSWORD  https://172.17.0.2:9200/
 
+docker rm es01
+
+#  launch elastic search service node
+docker run --name es01 -dit -p 9200:9200 --net elastic  -m 1GB docker.elastic.co/elasticsearch/elasticsearch:9.2.2
+export ELASTIC_PASSWORD=sfgfhrhhjtgewf
+curl -X GET -k -u elastic:$ELASTIC_PASSWORD  https://localhost:9200/
+
+
+
 
 
 
