@@ -1,2 +1,9 @@
 yum clean all
 
+docker run --name es01 -it -m 1GB docker.elastic.co/elasticsearch/elasticsearch:9.2.2
+
+# open new terminal
+docker ps
+
+
+
