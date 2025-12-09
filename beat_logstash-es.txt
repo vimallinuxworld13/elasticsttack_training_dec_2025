@@ -51,6 +51,10 @@ filter {
                 convert => { "[http][request][body][bytes]" => "integer" }
         }
 
+       grok {
+                match => { "message" => '%{IP:clientip} - - \[%{HTTPDATE:timestamp}\] \"%{WORD:verb} %{NOTSPACE:request} HTTP/%{NUMBER:httpversion}\" %{NUMBER:status_code} %{NUMBER:bytes}' }
+        }
+
 }
 
 output {
