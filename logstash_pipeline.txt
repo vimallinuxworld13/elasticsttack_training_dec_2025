@@ -19,3 +19,49 @@ output {
 
 
 docker run -it --name logstash --rm   -v   /logstash_dec_2025:/code docker.elastic.co/logstash/logstash:9.2.1  -f /code/first.conf
+
+
+
+
+
+
+
+
+# cat http.conf
+input {
+
+        http {
+                port => 1234
+                codec => "json"
+        }
+
+        stdin {
+                codec => "json"
+}
+
+
+}
+
+filter {
+        mutate {
+                remove_field =>  [ "host", "[http][version]" ]
+                add_tag => ["DC_IN"]
+                convert => { "[http][request][body][bytes]" => "integer" }
+        }
+
+}
+
+output {
+        stdout {}
+
+        file {
+                path => "/code/output.txt"
+        }
+}
+
+# run pipeline
+docker run -it -p 1234:1234  --name logstash --rm -v   /logstash_dec_2025:/code docker.elastic.co/logstash/logstash:9.2.1  -f /code/http.conf
+
+# Test from client
+curl -X POST  -H  "content-type: application/json"  -d '{"name":"vimal", "mob":1234}' http://192.168.11.60:1234
+
