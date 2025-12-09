@@ -65,3 +65,54 @@ docker run -it -p 1234:1234  --name logstash --rm -v   /logstash_dec_2025:/code 
 # Test from client
 curl -X POST  -H  "content-type: application/json"  -d '{"name":"vimal", "mob":1234}' http://192.168.11.60:1234
 
+
+
+
+
+
+
+# cat es.conf
+input {
+
+        http {
+                port => 1234
+                codec => "json"
+        }
+
+        stdin {
+                codec => "json"
+}
+
+
+}
+
+filter {
+        mutate {
+                remove_field =>  [ "host", "[http][version]" ]
+                add_tag => ["DC_IN"]
+                convert => { "[http][request][body][bytes]" => "integer" }
+        }
+
+}
+
+output {
+
+        elasticsearch {
+                user => "elastic"
+                password => "-=97mOLhbjJYbMlJdES5"
+                hosts => ["https://es01:9200"]
+                index => "my-custom-index"
+                ssl_verification_mode => none
+
+        }
+
+        stdout {}
+
+}
+
+docker run -it --net elastic  -p 1234:1234  --name logstash --rm   -v   /logstash_dec_2025:/code docker.elastic.co/logstash/logstash:9.2.1  -f /code/es.conf
+
+curl -X POST  -H  "content-type: application/json"  -d '{"name":"tom", "mob":222}' http://192.168.11.60:1234
+
+
+
