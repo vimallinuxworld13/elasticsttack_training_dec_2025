@@ -10,24 +10,30 @@ go to web browser : http://vmip/dd.html
 
 rpm -q filebeat
 
- 1083  filebeat modules list
- 1084  filebeat modules enable apache
- 1085  filebeat modules list
- 1086  cd /etc/filebeat/
- 1087  ls
- 1088  cd modules.d/
- 1089  ls
- 1090  vim apache.yml
- 1091  systemctl restart filebeat
- 1092  ls
- 1093  cd /etc/filebeat/
- 1094  ls
- 1095  vim filebeat.yml
- 1096  systemctl restart filebeat
- 1097  systemctl status  filebeat
- 1098  cd /logstash_dec_2025/
- 1099  ls
- 1100  vim beat.conf
+filebeat modules list
+filebeat modules enable apache
+filebeat modules list
+
+cd /etc/filebeat/
+ls
+cd modules.d/
+ls
+vim apache.yml
+
+systemctl restart filebeat
+ls
+cd /etc/filebeat/
+ls
+vim filebeat.yml
+output.logstash:
+  # The Logstash hosts
+  hosts: ["localhost:5044"]
+
+
+systemctl restart filebeat
+systemctl status  filebeat
+cd /logstash_dec_2025/
+ls
 
 # cat beat.conf
 input {
