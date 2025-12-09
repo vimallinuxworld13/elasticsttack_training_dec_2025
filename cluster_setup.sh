@@ -2,6 +2,8 @@ yum clean all
 docker system prune -a --volumes
 docker rm -f $(docker ps -a -q)
 
+docker network create elastic
+sleep 1
 docker run --name es01 -dit -p 9200:9200 --net elastic  -m 1GB docker.elastic.co/elasticsearch/elasticsearch:9.2.1
 echo "setting up master node ..."
 sleep 30
