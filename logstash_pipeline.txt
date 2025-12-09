@@ -1,0 +1,21 @@
+mkdir /logstash_dec_2025
+cd /logstash_dec_2025
+
+#cat first.conf
+input {
+        stdin {
+                codec => "json"
+}
+
+
+}
+
+filter {}
+
+output {
+        stdout {}
+}
+
+
+
+docker run -it --name logstash --rm   -v   /logstash_dec_2025:/code docker.elastic.co/logstash/logstash:9.2.1  -f /code/first.conf
