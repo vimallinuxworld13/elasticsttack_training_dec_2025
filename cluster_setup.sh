@@ -15,6 +15,7 @@ docker run -e ENROLLMENT_TOKEN=$ENROLLMENT_TOKEN --name es04 --net elastic -dit 
 sleep  2
 docker run --name kib01 -dit --net elastic -p 5601:5601 docker.elastic.co/kibana/kibana:9.2.1
 sleep  2
+echo "Kibana Token ...."
 docker exec -it es01 /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
 
 echo "cluster setup done.."
