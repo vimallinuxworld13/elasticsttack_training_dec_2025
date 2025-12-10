@@ -247,4 +247,115 @@ GET /app-web-prod-other-2025-12-10/_stats
 
 
 
+GET /app-web-prod-other-2025-12-10/_search
+{
+    "aggs": {
+      "status_counts": {
+        "terms": {
+          "field": "http.response.status_code"
+        }
+      }
+    }
+}
+
+
+GET /app-web-prod-other-2025-12-10/_search
+{
+    "aggs": {
+      "status_counts": {
+        "terms": {
+          "field": "source.address.keyword", "size": 2
+        }
+      }
+    }
+}
+
+GET /app-web-prod-other-2025-12-10/_search
+{
+    "aggs": {
+      "avg_bytes": {
+        "avg": { 
+            "field": "http.response.body.bytes"
+        }
+      }
+    }
+}
+
+
+GET /app-web-prod-other-2025-12-10/_search?filter_path=aggregations
+{
+    "size": 0,
+
+    "aggs": {
+      "avg_bytes": {
+        "stats": { 
+            "field": "http.response.body.bytes"
+        }
+      }
+    }
+}
+
+
+
+GET /app-web-prod-other-2025-12-10/_search
+{
+    "size": 0,
+
+    "query": { 
+        "range": {
+          "@timestamp": {
+            "gte": "now-1d",
+            "lte": "now"
+          }
+        }
+    },
+
+    "aggs": {
+      "status_counts": {
+        "terms": {
+          "field": "source.address.keyword", "size": 2
+        }
+      }
+    }
+}
+
+
+GET /app-web-prod-other-2025-12-10/_search
+{
+    "size": 0,
+    "query": {
+         "range": {
+          "@timestamp": {
+            "gte": "now-1d",
+            "lte": "now"
+          }
+        }
+    },
+
+    "aggs": {
+      "per_minute": {
+        "date_histogram": {
+            "field": "@timestamp",
+            "calendar_interval": "minute",
+            "format": "yyyy-MM-dd HH:mm"
+        },
+        "aggs": {
+          "status_counts": {
+            "terms": { "field": "http.response.status_code", "size": 2}
+          }
+        }
+      }
+    }
+}
+
+
+GET /app-web-prod-other-2025-12-10/_search
+{
+    "size": 0,
+    "aggs": {
+      "NAME": {
+        "AGG_TYPE": {}
+      }
+    }
+}
 
