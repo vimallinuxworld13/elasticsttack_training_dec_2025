@@ -1,0 +1,224 @@
+
+PUT _ingest/pipeline/my-pipeline
+{
+  "version": 1,
+  "description": "My optional pipeline description",
+  "processors": [
+    {
+      "set": {
+        "description": "My optional processor description",
+        "field": "my-long-field",
+        "value": 10
+      }
+    },
+    {
+      "set": {
+        "description": "Set 'my-boolean-field' to true",
+        "field": "my-boolean-field",
+        "value": true
+      }
+    },
+    {
+      "lowercase": {
+        "field": "my-keyword-field"
+      }
+    }
+  ]
+}
+
+
+
+POST _ingest/pipeline/my-pipeline/_simulate
+{
+  "docs": [
+    {
+      "_source": {
+        "my-keyword-field": "FOO"
+      }
+    },
+    {
+      "_source": {
+        "my-keyword-field": "BAR"
+      }
+    }
+  ]
+}
+
+POST _ingest/pipeline/_simulate
+{
+  "pipeline": {
+    "processors": [
+      {
+        "lowercase": {
+          "field": "my-keyword-field"
+        }
+      }
+    ]
+  },
+  "docs": [
+    {
+      "_source": {
+        "my-keyword-field": "FOO"
+      }
+    },
+    {
+      "_source": {
+        "my-keyword-field": "BAR"
+      }
+    }
+  ]
+}
+
+
+GET my-data-stream/_search
+
+DELETE my-data-stream
+GET my-data-stream/_search
+
+POST my-data-stream/_doc?pipeline=my-pipeline
+{
+  "@timestamp": "2099-03-07T11:04:05.000Z",
+  "my-keyword-field": "FOOOOOOOO"
+}
+
+
+PUT my-data-stream/_bulk?pipeline=my-pipeline
+{ "create":{ } }
+{ "@timestamp": "2099-03-07T11:04:06.000Z", "my-keyword-field": "foo" }
+{ "create":{ } }
+{ "@timestamp": "2099-03-07T11:04:07.000Z", "my-keyword-field": "bar" }
+
+
+GET my-new-data-stream/_search
+POST _reindex
+{
+  "source": {
+    "index": "my-data-stream"
+  },
+  "dest": {
+    "index": "my-new-data-stream",
+    "op_type": "create",
+    "pipeline": "my-pipeline"
+  }
+}
+
+
+
+
+
+POST _ingest/pipeline/_simulate
+{
+  "pipeline": {
+    "description" : "Test pipeline",
+    "processors": [
+      {
+        "grok": {
+          "field": "message",
+          "patterns": ["%{NOTSPACE:date} %{NOTSPACE:origin} %{GREEDYDATA:raw_message}"]
+        }
+      },
+      {
+        "rename": {
+          "field": "Origin",
+          "target_field": "OriginSite"
+        }
+      },
+      {
+        "date" : {
+          "field" : "Date",
+          "target_field" : "@timestamp",
+          "formats" : ["ISO8601"]
+        }
+      },
+      {
+        "remove": {
+          "field": "message"
+        }
+      }
+    ]
+  },
+    "docs": [
+    {
+      "_source": {
+        "message": "2021-05-11T20:14:25.003Z mytest.example.com There seems to be a problem"
+      }
+    },
+    {
+      "_source": {
+        "message": "2021-02-12T10:24:35.000Z mytest2.example.com There seems to be another problem"
+      }
+    }
+  ]
+}
+
+
+PUT _ingest/pipeline/test
+{
+  "description": "Test pipeline",
+  "processors": [
+    {
+      "grok": {
+        "field": "message",
+        "patterns": [
+          "%{NOTSPACE:Date} %{NOTSPACE:Origin} %{GREEDYDATA:raw_message}"
+        ]
+      }
+    },
+    {
+      "rename": {
+        "field": "Origin",
+        "target_field": "OriginSite"
+      }
+    },
+    {
+      "date": {
+        "field": "Date",
+        "target_field": "@timestamp",
+        "formats": [
+          "ISO8601"
+        ]
+      }
+    },
+    {
+      "remove": {
+        "field": "message"
+      }
+    }
+  ]
+}
+
+
+
+POST _bulk
+{ "index" : { "_index" : "fruit_colors", "_id" : "1" } }
+{ "color" : "red","fruit" : "watermelon"  }
+{ "index" : { "_index" : "fruit_colors", "_id" : "2" } }
+{ "color" : "green","fruit" : "kiwi"  }
+{ "index" : { "_index" : "fruit_colors", "_id" : "3" } }
+{ "color" : "blue","fruit" : "blueberry" }
+
+
+PUT /_enrich/policy/color_lookup
+{"match":{"indices":"fruit_colors","match_field":"fruit","enrich_fields":["color"]}}
+
+PUT /_enrich/policy/color_lookup/_execute
+
+
+PUT _ingest/pipeline/test
+{
+  "description": "Test pipeline",
+  "processors": [
+   {
+      "enrich": {
+        "ignore_missing": true, \\ for any documents that don’t have the lookup field (fruit)
+        "policy_name": "color_lookup",
+        "field": "fruit_type",
+        "target_field": "additional_info"
+      }
+    }
+  ]
+}
+
+
+
+
