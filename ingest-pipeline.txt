@@ -221,4 +221,16 @@ PUT _ingest/pipeline/test
 
 
 
+POST _ingest/pipeline/test/_simulate
+{
+  "docs": [
+    {
+      "_source": {
+        "fruit_type": "blueberry"
+      }
+    }
+  ]
+}
+
+
 
